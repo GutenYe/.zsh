@@ -2,7 +2,10 @@
 
 [[ $(id -u) -eq 0 ]] && sudo="" || sudo="sudo"
 
+
 source "$HOME/.zprofile"
+source "$HOME/.zprofile.$OS"
+
 source "$ZSH/zsh.completion.zsh"
 
 # ¤lib #{{{1
@@ -112,7 +115,12 @@ alias prename="perl-rename -v"
 alias imgur="imgurbash"
 
 # ¤ls
-eval `dircolors ~/.dir_colors`
+if [[ $OS == "li" ]]; then
+	eval `dircolors ~/.dir_colors`
+elif [[ $OS == "osx" ]]; then
+	export CLICOLOR=1
+	export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
+fi
 alias ls="ls --color=auto --group-directories-first --ignore-backups"
 alias ll="ls -lh"            # Show human readable.
 alias la="ls -lhA"           # Show hidden files.
@@ -332,6 +340,6 @@ bower() {
 # load plugins
 source "$ZSH/lib/zshrc.zsh"
 
-source ~/.nvm/nvm.sh
+[[ -f "$HOME/.nvm/nvm.sh" ]] && source ~/.nvm/nvm.sh
 
 # vim: fdm=marker

@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 # fix archlinux
-source /usr/share/zsh/site-functions/_go
+[[ -f /usr/share/zsh/site-functions/_go ]] && source /usr/share/zsh/site-functions/_go
 
 # support functions for go cross compilation
 
