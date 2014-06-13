@@ -89,6 +89,7 @@ alias -g 0null=" &>/dev/null"
 alias -g 1null=" 1>/dev/null"
 alias -g 2null=" 2>/dev/null"
 
+alias vc="vcsh"
 alias offwebcam="$sudo modprobe -r uvcvideo"
 alias rename="rename -v"
 alias copy="xsel --clipboard --input"
