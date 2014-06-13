@@ -3,4 +3,5 @@ theme local.user.rbenv.ssh.git
 
 keymap vim 
 
+plugin "zshmarks"
 source "$ZSH/Pluginfile.$OS"
