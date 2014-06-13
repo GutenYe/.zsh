@@ -1,7 +1,7 @@
 export ZSH="$HOME/.zsh"
 source "$ZSH/lib/zprofile.zsh"
 
-export PATH="$HOME/bin:$ZSH/bin:$PATH:$HOME/.gem/ruby/2.0.0/bin:$HOME/go/bin"
+export PATH="$HOME/bin:$ZSH/bin:$PATH:$HOME/go/bin"
 export BLOCK_SIZE="human-readable"  # for ls du df
 export SHELL="/bin/zsh"
 export EDITOR="vim"
@@ -27,7 +27,10 @@ export GREP_COLOR="37;45"
 
 # ¤rb
 #RUBY_VERSION="1.9.1"
-#export GEM_HOME="$HOME/.gem/ruby/2.0.0"
+# when ruby version changes, update GEM_HOME. also update PATH. for example: 2.0.0, 2.1.0, ...
+# export GEM_HOME # not work with rbenv
+export _GEM_HOME="$HOME/.gem/ruby/2.1.0" # for gem2 and bundle2
+export PATH="$PATH:$_GEM_HOME/bin"
 #export RUBY_LIB="/usr/lib/ruby/$RUBY_VERSION"  # user-defined 
 #export RUBY_SITELIB="/usr/lib/ruby/site_ruby/$RUBY_VERSION" # user-defined
 #export RUBYOPT="-r /usr/lib/ruby/gems/1.9.1/gems/pd-1.0.3/lib/pd.rb"
@@ -50,6 +53,8 @@ export GOPATH="$HOME/go/site:$HOME/go:$GOPATH"
 #export LD_LIBRARY_PATH="$HOME/lib"  # shared object.
 #export LIBRARY_PATH="$HOME/src" # source file when compile
 #export CPATH="$HOME/include"
+
+export DART_SDK="/opt/dart-sdk"
 
 # user
 export ONE="/home/guten"   

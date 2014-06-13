@@ -12,11 +12,10 @@ function sctl(){
 
   case $cmd in
     -f | --failed ) systemctl --failed ;;
-    -e | --enabled ) 
-      ls /usr/lib/systemd/system/*.wants/ 
-      ls /etc/systemd/system/*.wants/ 
+    -e | --enabled )
+      ls /usr/lib/systemd/system/*.wants/
+      ls /etc/systemd/system/*.wants/
       ;;
-    reload ) $sudo systemctl --system daemon-reload ;;
     s | start )
       $sudo systemctl start $*
       systemctl status $*
@@ -36,11 +35,16 @@ compdef _systemd sctl=systemctl
 
 # a journalctl helper.
 function jctl(){
-  name=$1; shift
+  name="$1"; shift
 
-  case $name in
-    systemd ) journalctl _PID=1 $* ;;
-    driver | syslog | journal | stdout | kernel ) journalctl _TRANSPORT=$name $* ;;
-    * )       journalctl $name $* ;;
+  case "$name" in
+    systemd ) 
+      journalctl _PID=1 "$@" ;;
+    driver | syslog | journal | stdout | kernel ) 
+      journalctl _TRANSPORT="$name" "$@" ;;
+    gnome-shell | gnome-session ) 
+      journalctl _COMM="gnome-session" "$@" ;;
+    * )       
+      journalctl "$name" "$@" ;;
   esac
 }

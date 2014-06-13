@@ -1,7 +1,23 @@
+# don't use alias like `rename -v`. it won't work in `ls | xargs rename`
+
 [[ $(id -u) -eq 0 ]] && sudo="" || sudo="sudo"
 
+source "$HOME/.zprofile"
 source "$ZSH/zsh.completion.zsh"
 
+# ¤lib #{{{1
+absolutename() {
+	readlink -f "$1"
+}
+
+extname() {
+	[[ "$1" =~ "\." ]] && echo "${1##*.}" || echo ""
+}
+
+filename() {
+	dirname "${1%.*}"
+}
+#}}}1
 # ¤settings #{{{1
 # ¤theme
 #themerc=(                                                                     
@@ -20,6 +36,8 @@ source "$ZSH/zsh.completion.zsh"
 #  git_unmerged  " ═"                                                          
 #  git_untracked " ✭"                                                          
 #) 
+
+bindkey "^R" history-incremental-search-backward
 
 # Smart URLs
 autoload -U url-quote-magic
@@ -58,6 +76,8 @@ setopt inc_append_history
 
 #}}}1
 
+app="common channel platform"
+
 # ¤alias
 # Global
 alias -g L="| less "
@@ -66,6 +86,13 @@ alias -g 0null=" &>/dev/null"
 alias -g 1null=" 1>/dev/null"
 alias -g 2null=" 2>/dev/null"
 
+alias offwebcam="$sudo modprobe -r uvcvideo"
+alias rename="rename -v"
+alias copy="xsel --clipboard --input"
+alias paste="xsel --clipboard --output"
+alias copy2="xsel --primary --input"
+alias paste2="xsel --primary --output"
+#alias git="hub"
 alias s="sctl"
 #¤system
 alias halt="sudo poweroff"
@@ -74,14 +101,13 @@ alias reboot="sudo reboot"
 # ¤shortcuts
 alias edit="$EDITOR"
 alias e="$EDITOR"
-alias o="xdg-open"
+alias c="chromium"
 alias r="run"
 alias x="extract"
 function mp(){
   #saber seen -t trakt $1 &
   mplayer $*
 }
-alias rename="rename -v"
 alias prename="perl-rename -v"
 alias imgur="imgurbash"
 
@@ -189,19 +215,19 @@ alias gree="egrep --exclude .*"
 alias esed="sed -r"
 alias thermal="acpi -t;sudo hddtemp /dev/sda"
 alias cputhermal="acpi -t"
-alias cpufreq="cpufreq-info"
 alias off="sleep 2 && xset dpms force off"
 alias feh="feh --scale-down"
 alias fehcmp="feh -FZ --draw-filename $*"
 alias ncscan="nc -zvw1"
-alias rsync2="rsync -azHX --stats --progress -vh --numeric-ids"
+alias rsync2="rsync -ahP"
 function wine2() {
   WINEPREFIX="$HOME/.local/share/wineprefixes/$1" wine cmd /c "$HOME/.local/share/wineprefixes/$1/drive_c/run-$1.bat"
 }
 alias winecn="LANG=zh_CN.UTF-8 wine"
 
 alias -- -="sudo"
-alias -- -e="sudo $EDITOR"
+#alias -- -e="sudo $EDITOR"
+alias -- -e="sudo -H vim"
 alias -- -rm="sudo rm"
 alias -- -rmr="sudo rm -r"
 alias -- -mv="sudo mv"
@@ -221,8 +247,7 @@ alias rc.d="$sudo rc.d"
 function mount() {
 	case $1 in
 		"" ) command mount ;;
-		* ) $sudo mount $* ;;
-	esac
+		* ) $sudo mount $* ;; esac
 }
 alias umount="$sudo umount"
 
@@ -267,14 +292,46 @@ alias sgs8="sudo su ywzhaifei8 -c 'chromium &>/dev/null' &"
 alias grub-mkconfig2="sudo grub-mkconfig -o /boot/grub/grub.cfg"
 #alias firefox-addon="cd /opt/addon-sdk && source bin/activate; cd -"
 alias firefox-addon="cd /home/guten/dev/src/firefox/addon-sdk && source bin/activate; cd -"
+#alias firefox2="firefox -P default2 --new-instance &>/dev/null &"
 alias cfx="python2 /home/guten/dev/src/firefox/addon-sdk/bin/cfx -p ~/.mozilla/firefox/dev2"
 
-function pon2() {
-  sudo pon $1 debug nodetach
+alias imageinfo="identify"
+alias l="quicklink"
+
+function pptp() {
+  case "$1" in
+    "" ) name="current" ;;
+    * ) name="$1" ;;
+  esac
+  $sudo pon "$name" debug nodetach
+}
+
+function openvpn() {
+  case "$1" in
+    "" ) $sudo openvpn current.conf ;;
+    * ) $sudo openvpn "$@" ;;
+  esac
+}
+
+# ¤mbox util
+mbox() {
+  case "$1" in
+    "" | cp ) scp *.torrent guten@mbox:bt/.watch ;;
+  esac
+}
+
+bower() {
+  cmd="$1"
+  case "$cmd" in
+    install | uninstall ) shift; command bower "$cmd" -S "$@";;
+    * ) command bower "$@";;
+  esac
 }
 
 #source "$ZSH/zsh.correct.zsh"
 # load plugins
 source "$ZSH/lib/zshrc.zsh"
+
+source ~/.nvm/nvm.sh
 
 # vim: fdm=marker

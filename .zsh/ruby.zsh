@@ -1,10 +1,3 @@
-#function gem(){
-#  case $1 in
-#    install | uninstall | update ) command gem $1 --user-install $*[2,-1] ;;
-#    * ) command gem $* ;;
-#  esac
-#}
-
 alias be="bundle exec"
 alias bi="bundle install"
 alias bl="bundle list"
